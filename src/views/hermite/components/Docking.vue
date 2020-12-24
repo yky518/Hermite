@@ -1,15 +1,15 @@
 <template>
 <div id="docking">
-  <a-form labelAlign="left">
-    <div style="background: #FAFAFA;">
-      <h2>Docking</h2>
+  <h2>Docking</h2>
+  <a-form labelAlign="left" class="form">
+    <div style="background-color: #FAFAFA;">
       <a-card>
-        <span>Job Name:</span><a-input class="jobname-input"></a-input>
+        <span style="font-size: 12px">Job Name:</span><a-input class="jobname-input"></a-input>
       </a-card>
     </div>
     <a-collapse v-model="activeKey">
       <a-collapse-panel key="1" header="Load Protein">
-        <div style="margin: 10px">
+        <div style="margin: 15px">
           <a-radio>Load <i>ProteinPrep</i> Result:</a-radio>
           <p style="text-align: right;margin-right: 10px">
             Job ID: <a-input class="file-input"></a-input>
@@ -21,12 +21,12 @@
             <a-button class="file-button">Browse</a-button>
           </p>
           <a-radio>Prepare a New Protein:</a-radio>
-          <a-button block class="content-button">Protein Prep</a-button>
+          <a-button block class="prepare-button">Protein Prep</a-button>
         </div>
 
       </a-collapse-panel>
       <a-collapse-panel key="2" header="Load Ligands">
-        <div style="margin: 10px">
+        <div style="margin: 15px">
           <a-radio>Load <i>LigandPrep</i> Result:</a-radio>
           <p style="text-align: right;margin-right: 10px">
             Job ID: <a-input class="file-input"></a-input>
@@ -38,50 +38,61 @@
             <a-button class="file-button">Browse</a-button>
           </p>
           <a-radio>Prepare a New Ligand:</a-radio>
-          <a-button block class="content-button">Ligand Prep</a-button>
+          <a-button block class="prepare-button">Ligand Prep</a-button>
         </div>
 
       </a-collapse-panel>
       <a-collapse-panel key="3" header="Select Pocket">
-        <div style="margin: 10px">
+        <div style="margin: 15px">
           <a-row style="text-align: center;border: 1px solid #333333;padding-top: 1rem">
             <a-col :span="8">
               <p>Center X Coord</p>
-              <p>36.168</p>
+              <p><a-input v-model="coord.x" style="width: 100px;text-align: center"></a-input></p>
             </a-col>
             <a-col :span="8">
               <p>Center Y Coord</p>
-              <p>30.168</p>
+              <p><a-input v-model="coord.y" style="width: 100px;text-align: center"></a-input></p>
 
             </a-col>
             <a-col :span="8">
               <p>Center Z Coord</p>
-              <p>34.168</p>
+              <p><a-input v-model="coord.z" style="width: 100px;text-align: center"></a-input></p>
 
             </a-col>
           </a-row>
-          <h4>
-            Select the box size: {{boxSize}} <a-icon type="question-circle" theme="filled"/>
+          <h4 style="margin-top: 5px">
+            Select the box size:
+            <a-input v-model="boxSize" style="width: 50px"></a-input>
+            <a-icon type="question-circle" theme="filled"/>
           </h4>
           <a-slider :min="0" :max="500" v-model="boxSize"/>
-          <div class="choose-title">Choose center of predicted binding site</div>
+          <a-button block class="prepare-button" @click="ifBindingVisible = !ifBindingVisible">
+            Choose center of predicted binding site
+          </a-button>
           <a-table :columns="bindingColumns" class="content-table"
+                   v-show="ifBindingVisible"
                    rowKey="index" :row-selection="bindingRowSelection"
                    :data-source="bindingData" :pagination="false">
               <span slot="select" slot-scope="text" class="table-operation">
                 <a-checkbox></a-checkbox>
               </span>
           </a-table>
-          <div class="choose-title">Choose Center of Ligand</div>
+          <a-button block class="prepare-button" @click="ifLigandVisible = !ifLigandVisible">
+            Choose Center of Ligand
+          </a-button>
           <a-table :columns="ligandColumns" class="content-table"
+                   v-show="ifLigandVisible"
                    rowKey="index" :row-selection="ligandRowSelection"
                    :data-source="ligandData" :pagination="false">
               <span slot="select" slot-scope="text" class="table-operation">
                 <a-checkbox></a-checkbox>
               </span>
           </a-table>
-          <div class="choose-title">Choose Center of Selected Residues</div>
+          <a-button block class="prepare-button" @click="ifResiduesVisible = !ifResiduesVisible">
+            Choose Center of Selected Residues
+          </a-button>
           <a-table :columns="residueColumns" class="content-table"
+                   v-show="ifResiduesVisible"
                    rowKey="index" :row-selection="residueRowSelection"
                    :data-source="residueData" :pagination="false">
               <span slot="select" slot-scope="text" class="table-operation">
@@ -92,7 +103,7 @@
 
       </a-collapse-panel>
       <a-collapse-panel key="4" header="Protein Flexibility">
-        <div style="margin: 10px">
+        <div style="margin: 15px">
           <a-row class="flexibility-row">
             <a-col :span="8">
               <p>Residues</p>
@@ -129,32 +140,11 @@
 
             </a-col>
           </a-row>
-          <h5>Flexibility Chosen Helper</h5>
-          <p>
-            Sidechains within
-            <a-input class="content-input"></a-input>
-            Å of the center
-            <a-button class="content-button">Load</a-button>
-          </p>
-          <p>
-            Atoms within
-            <a-input class="content-input"></a-input>
-            Å of the center
-            <a-button class="content-button">Load</a-button>
-          </p>
-          <p>
-            All protein sidechains
-            <a-button class="content-button">Load</a-button>
-          </p>
-          <p>
-            Entire protein
-            <a-button class="content-button">Load</a-button>
-          </p>
-        </div>
 
+        </div>
       </a-collapse-panel>
       <a-collapse-panel key="5" header="Docking Methods">
-        <div style="margin: 10px">
+        <div style="margin: 15px">
           <a-radio>AutoDock Vina</a-radio>
           <div style="margin-left: 24px">
             <a-form-item label="Exhaustiveness" :labelCol="{span: 17}">
@@ -190,7 +180,7 @@
 
       </a-collapse-panel>
       <a-collapse-panel key="6" header="Results Processing">
-        <div style="margin: 10px">
+        <div style="margin: 15px">
           <p>Kept best compounds</p>
           <a-row>
             <a-col :span="12">
@@ -205,6 +195,34 @@
         </div>
 
       </a-collapse-panel>
+      <a-collapse-panel key="7" header="Load">
+        <div style="margin: 15px">
+          <p>Flexibility Chosen Helper</p>
+          <p style="line-height: 36px">
+            <a-radio>
+              Sidechains within
+              <a-input class="content-input"></a-input>
+              Å of the center
+              <a-button class="content-button">Load</a-button>
+            </a-radio>
+            <a-radio>
+              Atoms within
+              <a-input class="content-input"></a-input>
+              Å of the center
+              <a-button class="content-button">Load</a-button>
+            </a-radio>
+            <a-radio>
+              All protein sidechains
+              <a-button class="content-button">Load</a-button>
+            </a-radio>
+            <a-radio>
+              Entire protein
+              <a-button class="content-button">Load</a-button>
+            </a-radio>
+          </p>
+
+        </div>
+      </a-collapse-panel>
     </a-collapse>
     <a-button block class="submit-button">Submit</a-button>
   </a-form>
@@ -216,25 +234,33 @@ export default {
   name: 'Docking',
   data() {
     return {
+      coord: {
+        x: 32.3,
+        y: 34.5,
+        z: 23.8,
+      },
       boxSize: 10.00,
+      ifBindingVisible: false,
+      ifLigandVisible: false,
+      ifResiduesVisible: false,
       bindingColumns: [
         {
-          title: 'pocket ID',
+          title: 'Pocket ID',
           dataIndex: 'id',
           key: 'id',
         },
         {
-          title: 'relevance score',
+          title: 'Relevance score',
           dataIndex: 'score',
           key: 'score',
         },
         {
-          title: 'volume',
+          title: 'Volume',
           dataIndex: 'volume',
           key: 'volume',
         },
         {
-          title: 'druggability',
+          title: 'Druggability',
           dataIndex: 'ability',
           key: 'ability',
         },
@@ -318,19 +344,21 @@ export default {
       ],
       residueData: [
         {
-          compound: 1,
-          chain: 100,
-          residue: 600,
-          name: '20%',
+          index: 1,
+          type: 100,
+          chain: 600,
+          first: 1,
+          last: 10,
         },
         {
-          compound: 2,
-          chain: 100,
-          residue: 600,
-          name: '20%',
+          index: 1,
+          type: 100,
+          chain: 600,
+          first: 1,
+          last: 10,
         },
       ],
-      activeKey: ['1'],
+      activeKey: ['1', '2'],
     };
   },
   computed: {
@@ -413,6 +441,17 @@ export default {
 
 <style scoped lang="scss">
 #docking {
+  height: 100%;
+  position: relative;
+  padding-bottom: 50px;
+  .form{
+    height: calc(100% - 50px);
+    overflow: auto;
+    /deep/ .ant-form-item{
+      margin: 0;
+    }
+
+  }
   .jobname-input {
     width: 200px;
     margin-left: 10px;
@@ -460,6 +499,12 @@ export default {
     border-radius: 20px;
     color: #ffffff;
   }
+
+  .prepare-button{
+    margin: 5px;
+    height: 30px;
+    background: #F7F7F7;
+  }
   .choose-title{
     height: 30px;
     line-height: 30px;
@@ -479,7 +524,15 @@ export default {
     height: 50px;
     background: #1F2676;
     color: #ffffff;
+    position: absolute;
+    bottom: 0;
+  }
 
+  /deep/ .ant-table tr > th{
+    padding: 5px;
+  }
+  /deep/ .ant-table tr > td{
+    padding: 5px;
   }
 }
 </style>

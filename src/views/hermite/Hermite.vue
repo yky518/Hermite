@@ -1,29 +1,21 @@
 <template>
 <div>
   <a-layout class="layout">
-    <a-layout-header style="padding: 0" class="top">
+    <a-layout-header style="padding: 0;height: 42px" class="top">
       <Navbar class="nav"></Navbar>
     </a-layout-header>
-    <a-layout-content style="padding: 0;margin-top: 64px;">
+    <a-layout-content style="padding: 0;margin-top: 42px;">
       <a-layout>
         <a-layout-sider collapsible v-model="leftCollapsed" collapsedWidth="0" width="350"
                         class="left-sider" :trigger="null"
                         :zeroWidthTriggerStyle="{backgroundColor: '#fff',color: '#333333'}">
           <Functions @function-click="functionClick"></Functions>
           <Jobs></Jobs>
-<!--          <p>File: <a-input style="width: 40%" v-model="pdbFile"></a-input></p>-->
-          <a-button block class="files-button" @click="loadPdb">Files</a-button>
-<!--          <a-upload :before-upload="loadFromPdb" :fileList="fileList">
-            <a-button type="primary">上传pdb文件</a-button>
-          </a-upload>
-          <p>Url: <a-input style="width: 40%" v-model="pdbUrl"></a-input></p>
-          <a-button block class="files-button" @click="loadUrl">Url</a-button>-->
-
         </a-layout-sider>
         <a-layout-content :style="{position: 'relative',height: '100vh',}">
 
           <div :style="{marginLeft: leftCollapsed?'0px': '350px',
-          marginRight: rightCollapsed?'0px': '350px',
+          marginRight: rightCollapsed?'0px': '400px',
           textAlign: 'center',position: 'absolute',right: '0', left: '0' }">
 <!--            <a-button>Surface View</a-button>
             <a-button>Surface View</a-button>
@@ -56,7 +48,7 @@
 
         </a-layout-content>
         <a-layout-sider collapsible :reverseArrow="true" v-model="rightCollapsed"
-                        collapsedWidth="0" width="350"
+                        collapsedWidth="0" width="400"
                         class="right-sider"
                         :zeroWidthTriggerStyle="{backgroundColor: '#fff',color: '#333333'}">
             <component :is="inputComponent"></component>
@@ -66,8 +58,8 @@
 
   </a-layout>
 
-  <div id="chat" @click="isChatVisible = true">
-    <img src="@/assets/img/chat_icon.png">
+  <div id="chat" @click="isChatVisible = true" style="cursor: pointer">
+    <img class="icon-img" src="@/assets/img/chat_icon@2x.png">
   </div>
 
   <a-modal title="全部" v-model="isChatVisible" :footer="null">
@@ -93,7 +85,7 @@ export default {
   data() {
     return {
       search: '',
-      leftCollapsed: true,
+      leftCollapsed: false,
       rightCollapsed: false,
       rightVisible: false,
       placement: 'left',
@@ -106,7 +98,7 @@ export default {
     };
   },
   created() {
-    this.inputComponent = 'Docking';
+    this.inputComponent = 'Results';
   },
   methods: {
     onClose() {
@@ -117,6 +109,7 @@ export default {
     },
     functionClick(key) {
       this.inputComponent = key;
+      this.rightCollapsed = false;
     },
     loadPdb() {
       console.log(this.pdbFile);
@@ -154,6 +147,10 @@ export default {
 
 <style scoped lang="scss">
 
+.icon-img{
+  height: 22px;
+}
+
 .top {
   position: fixed;
   top: 0;
@@ -166,28 +163,29 @@ export default {
 }
 
 .left-sider {
-  height: calc(100vh - 64px);
+  height: calc(100vh - 42px);
   position: fixed;
   left: 0;
-  top: 64px;
+  top: 42px;
   background-color: #fff;
-  overflow: scroll;
+  overflow: auto;
   z-index: 100;
   .files-button{
     background-color: #1F2676;
     color: white;
+    height: 50px;
   }
 
 }
 
 .right-sider{
   background-color: white;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 42px);
   position: fixed;
   right: 0;
-  top: 64px;
+  top: 42px;
   bottom: 0;
-  overflow: scroll;
+  overflow: hidden;
 
   /deep/ .ant-collapse-content > .ant-collapse-content-box{
     padding: 0;

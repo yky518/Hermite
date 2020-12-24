@@ -2,8 +2,11 @@
 <div id="results">
   <a-collapse accordion>
     <a-collapse-panel key="1" header="Results">
-      <a-button>2D Structure</a-button>
-      <a-button>Ligand Interaction</a-button>
+      <div style="text-align: center;margin:10px 0">
+        <a-button class="content-button">2D Structure</a-button>
+        <a-button class="content-button">Ligand Interaction</a-button>
+      </div>
+
       <a-table :columns="columns" :data-source="data"
                :row-selection="rowSelection" rowKey="ligname">
       </a-table>
@@ -78,6 +81,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.content-button{
+  margin-left: 5px;
+  height: 30px;
+  background: #1F2676;
+  border-radius: 20px;
+  color: #ffffff;
+}
 
 </style>

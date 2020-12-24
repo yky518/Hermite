@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <Verify :type="3" :show-button="false" :bar-size="{width:'100%',height:'40px'}"></Verify>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -33,10 +34,15 @@
 </template>
 
 <script>
+import Verify from 'vue2-verify';
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String,
+  },
+  components: {
+    Verify,
   },
 };
 </script>

@@ -1,24 +1,26 @@
 <template>
   <div id="ligand">
+    <h2>Ligand Prep</h2>
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }"
+            class="form"
             @submit="handleSubmit">
       <div style="background: #FAFAFA;">
-        <h2>Ligand Prep</h2>
+
         <a-card>
-          <span>Job Name:</span><a-input class="jobname-input"></a-input>
+          <span style="font-size: 12px">Job Name:</span><a-input class="jobname-input"></a-input>
         </a-card>
       </div>
 
       <a-collapse v-model="activeKey">
         <a-collapse-panel key="1" header="Load Ligands">
           <div style="margin: 10px 0 0 10px">
-            <a-radio>Import Ligand File:</a-radio>
+            <a-checkbox>Import Ligand File:</a-checkbox>
             <p style="text-align: right;margin-right: 10px">
               File: <a-input class="file-input"></a-input>
               <a-button class="file-button">
                 Browse</a-button>
             </p>
-            <a-radio>Load Database</a-radio>
+            <a-checkbox>Load Database</a-checkbox>
             <a-checkbox-group v-model="databaseList"  style="text-align: left;margin-left: 20px">
               <a-row>
                 <a-col :span="12" v-for="item in databaseOptions" :key="'database-'+item.label">
@@ -32,47 +34,119 @@
 
         </a-collapse-panel>
         <a-collapse-panel key="2" header="Filter Molecules">
-          <div style="margin: 10px">
+          <div style="margin: 15px">
             <a-radio-group v-model="filterList">
               <a-radio label="Custom">Custom</a-radio>
               <a-radio label="Set to ROS">Set to ROS</a-radio>
               <a-radio label="Set to RO3">Set to RO3</a-radio>
             </a-radio-group>
-            <a-row>
+            <a-row gutter="5">
               <a-col :span="12">
                 <h5>Atoms:</h5>
-                <a-slider :min="0" :max="500" v-model="atoms"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="atoms[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="0" :max="500" v-model="atoms"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="atoms[1]"></a-input>
+                  </a-col>
+                </a-row>
+
               </a-col>
               <a-col :span="12">
                 <h5>Rings:</h5>
-                <a-slider :min="0" :max="500" v-model="rings"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="rings[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="0" :max="80" v-model="rings"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="rings[1]"></a-input>
+                  </a-col>
+                </a-row>
               </a-col>
               <a-col :span="12">
                 <h5>Molecular weight:</h5>
-                <a-slider :min="0" :max="500" v-model="weight"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="weight[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="0" :max="5000" v-model="weight"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="weight[1]"></a-input>
+                  </a-col>
+                </a-row>
+
               </a-col>
               <a-col :span="12">
                 <h5>Rotatable bonds:</h5>
-                <a-slider :min="0" :max="500" v-model="bonds"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="bonds[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="0" :max="200" v-model="bonds"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="bonds[1]"></a-input>
+                  </a-col>
+                </a-row>
               </a-col>
               <a-col :span="12">
                 <h5>Hydrogen donors:</h5>
-                <a-slider :min="0" :max="500" v-model="donors"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="donors[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="0" :max="100" v-model="donors"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="donors[1]"></a-input>
+                  </a-col>
+                </a-row>
               </a-col>
               <a-col :span="12">
                 <h5>LogP:</h5>
-                <a-slider :min="0" :max="500" v-model="logP"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="logP[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="-100" :max="100" v-model="logP"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="logP[1]"></a-input>
+                  </a-col>
+                </a-row>
               </a-col>
               <a-col :span="12">
                 <h5>Hydrogen acceptors:</h5>
-                <a-slider :min="0" :max="500" v-model="acceptors"/>
+                <a-row>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="acceptors[0]"></a-input>
+                  </a-col>
+                  <a-col :span="14">
+                    <a-slider range :min="0" :max="100" v-model="acceptors"/>
+                  </a-col>
+                  <a-col :span="5">
+                    <a-input class="slider-input" v-model="acceptors[1]"></a-input>
+                  </a-col>
+                </a-row>
               </a-col>
             </a-row>
           </div>
 
         </a-collapse-panel>
         <a-collapse-panel key="3" header="Pronation state">
-          <div style="margin: 10px">
+          <div style="margin: 15px">
             <p><a-radio>Retain origin state</a-radio></p>
             <p>
               <a-radio>Generate possible states, PH</a-radio>
@@ -84,7 +158,7 @@
 
         </a-collapse-panel>
         <a-collapse-panel key="4" header="Generator Settings">
-          <div style="margin: 10px">
+          <div style="margin: 15px">
             <p><a-radio>Generate tautomers</a-radio></p>
             <p>
               <a-radio>Generate conformations</a-radio>
@@ -115,8 +189,9 @@
         </a-collapse-panel>
 
       </a-collapse>
-      <a-button block class="submit-button">Submit</a-button>
     </a-form>
+    <a-button block class="submit-button">Submit</a-button>
+
   </div>
 </template>
 
@@ -155,13 +230,13 @@ export default {
       form: {},
       databaseList: [],
       databaseOptions,
-      atoms: 30,
-      rings: 30,
-      weight: 30,
-      bonds: 30,
-      donors: 30,
-      logP: 30,
-      acceptors: 30,
+      atoms: [30, 400],
+      rings: [30, 40],
+      weight: [30, 400],
+      bonds: [30, 100],
+      donors: [30, 40],
+      logP: [30, 40],
+      acceptors: [30, 40],
       filterList: [],
     };
   },
@@ -175,6 +250,19 @@ export default {
 
 <style scoped lang="scss">
   #ligand{
+    height: 100%;
+    position: relative;
+    padding-bottom: 50px;
+    .form{
+      height: calc(100% - 50px);
+      overflow: auto;
+    }
+
+    .slider-input{
+      padding: 4px;
+      text-align: center;
+    }
+
     .jobname-input {
       width: 200px;
       margin-left: 10px;
@@ -215,7 +303,8 @@ export default {
       height: 50px;
       background: #1F2676;
       color: #ffffff;
-
+      position: absolute;
+      bottom: 0;
     }
   }
 </style>

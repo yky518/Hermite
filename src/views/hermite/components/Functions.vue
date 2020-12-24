@@ -1,6 +1,6 @@
 <template>
 <div id="functions">
-  <h2 class="title">Functions</h2>
+  <h3 class="title"><i>Functions</i></h3>
   <div style="text-align: center;">
     <a-input class="search-input" v-model="search" placeholder="search function">
       <a-icon slot="prefix" type="search"/>
@@ -11,29 +11,29 @@
     <a-menu-item key="Protein">
       <h3>
         <div class="icon-div">
-          <img class="img1" src="@/assets/img/Protein_icon_Select.png">
-          <img class="img2" src="@/assets/img/Protein Prepare_icon.png">
+          <img class="img1" src="@/assets/img/Protein_icon_Select@2x.png">
+          <img class="img2" src="@/assets/img/Protein_Prepare_icon@2x.png">
         </div>
-        <span style="margin-left: 22px">Protein Prepare</span>
+        <span style="margin-left: 30px">Protein Prepare</span>
       </h3>
     </a-menu-item>
     <a-menu-item key="Ligand">
       <h3>
         <div class="icon-div">
-          <img class="img1" src="@/assets/img/Ligand_icon_Select.png">
-          <img class="img2" src="@/assets/img/Ligand Prepare_icon.png">
+          <img class="img1" src="@/assets/img/Ligand_icon_Select@2x.png">
+          <img class="img2" src="@/assets/img/Ligand_Prepare_icon@2x.png">
         </div>
-        <span style="margin-left: 22px">Ligand Prepare</span>
+        <span style="margin-left: 30px">Ligand Prepare</span>
 
       </h3>
     </a-menu-item>
     <a-menu-item key="Docking">
       <h3>
         <div class="icon-div">
-          <img class="img1" src="@/assets/img/Docking_icon_Select.png">
-          <img class="img2" src="@/assets/img/Docking_icon.png">
+          <img class="img1" src="@/assets/img/Docking_icon_Select@2x.png">
+          <img class="img2" src="@/assets/img/Docking_icon@2x.png">
         </div>
-        <span style="margin-left: 22px">Docking</span>
+        <span style="margin-left: 30px">Docking</span>
       </h3>
 
     </a-menu-item>
@@ -64,12 +64,13 @@ export default {
 
   .title {
     //color: #fff;
-
+    margin-left: 10px;
+    color: gray;
   }
 
   .search-input{
     width: 90%;
-    margin: 20px 0;
+    margin: 10px 0;
     //margin: 0 auto;
   }
 
@@ -81,14 +82,17 @@ export default {
       .img2{
         display: none;
       }
+      .img1{
+        display: block;
+      }
     }
 
   }
   .ant-menu {
     border-top: 1px solid #EEEEEE;
     .ant-menu-item{
-      height: 60px;
-      line-height: 60px;
+      height: 40px;
+      line-height: 40px;
       border-bottom: 1px solid #EEEEEE;
       margin: 0;
 
@@ -101,8 +105,15 @@ export default {
         color: #14227A;
       }
 
+      .icon-div .img1 {
+        display: none;
+      }
+
       &:hover .icon-div .img2{
         display: none;
+      }
+      &:hover .icon-div .img1{
+        display: block;
       }
 
       .icon-div{
@@ -111,6 +122,8 @@ export default {
         vertical-align: text-top;
         .img1, .img2{
           position:absolute; z-index:0;
+          height: 22px;
+          margin-right: 10px;
         }
         .img1{
           //margin-left: -22px;

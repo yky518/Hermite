@@ -1,19 +1,20 @@
 <template>
 <div id="protein">
-  <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }"
-          @submit="handleSubmit">
+  <h2>Protein Prep</h2>
+  <a-form class="form"
+    :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }"
+    @submit="handleSubmit">
     <div style="background: #FAFAFA;">
-      <h2>Protein Prep</h2>
       <a-card>
-        <span>Job Name:</span><a-input class="jobname-input"></a-input>
+        <span style="font-size: 12px">Job Name:</span><a-input class="jobname-input"></a-input>
       </a-card>
     </div>
     <a-collapse v-model="activeKey">
       <a-collapse-panel key="1" header="Load Protein">
-        <div style="margin: 10px 0 0 10px">
+        <div style="margin: 15px">
           <a-radio>Import PDB File:</a-radio>
           <p style="text-align: right;margin-right: 10px">
-            File: <a-input class="file-input" v-model="pdbFile"></a-input>
+            File: <a-input classfile-in="put" v-model="pdbFile"></a-input>
             <a-upload :before-upload="loadFromPdb" :file-list="fileList">
               <a-button class="file-button">
                 Browse
@@ -23,21 +24,25 @@
           <a-radio>PDB ID</a-radio>
           <p style="text-align: right;margin-right: 10px">File:
             <a-input class="file-input"></a-input><a-button class="file-button">
-            Download</a-button></p>
+              Download</a-button></p>
         </div>
 
       </a-collapse-panel>
       <a-collapse-panel key="2" header="Model residues">
         <a-table :columns="residuesColumns" class="content-table"
+                 size="small"
+                 :row-selection="{ selectedRowKeys: selectedResidues, onChange: onSelectResidues }"
                  rowKey="chain"
                  :data-source="residuesData" :pagination="false">
-              <span slot="select" slot-scope="text" class="table-operation">
+              <span slot="confirm" slot-scope="text" class="table-operation">
                 <a-checkbox></a-checkbox>
               </span>
         </a-table>
       </a-collapse-panel>
       <a-collapse-panel key="3" header="Select Chain">
         <a-table :columns="chainColumns" class="content-table"
+                 size="small"
+                 :row-selection="{ selectedRowKeys: selectedChain, onChange: onSelectChain }"
                  rowKey="index"
                  :data-source="chainData" :pagination="false">
               <span slot="select" slot-scope="text" class="table-operation">
@@ -46,18 +51,26 @@
         </a-table>
       </a-collapse-panel>
       <a-collapse-panel key="4" header="Other Manipulation">
-        <div style="margin: 10px 0 0 10px">
+        <div style="margin: 15px">
           <p>
-            <a-radio>Add missing side chains</a-radio>
+            <a-checkbox>
+              Add missing side chains
+            </a-checkbox>
           </p>
           <p>
-            <a-radio>Add hydrogens</a-radio>
+            <a-checkbox>
+              Add hydrogens
+            </a-checkbox>
           </p>
           <p>
-            <a-radio>Optimize the hydrogen binding network</a-radio>
+            <a-checkbox>
+              Optimize the hydrogen binding network
+            </a-checkbox>
           </p>
           <p>
-            <a-radio>Protonation state, PH:</a-radio>
+            <a-checkbox>
+              Protonation state, PH:
+            </a-checkbox>
             <a-input class="ph-input"></a-input>
           </p>
         </div>
@@ -65,8 +78,9 @@
       </a-collapse-panel>
 
     </a-collapse>
-    <a-button block class="submit-button">Submit</a-button>
   </a-form>
+
+  <a-button block class="submit-button">Submit</a-button>
 </div>
 </template>
 
@@ -81,6 +95,8 @@ export default {
       fileList: [],
       pdbFile: '',
       activeKey: ['1'],
+      selectedResidues: [],
+      selectedChain: [],
       residuesColumns: [
         {
           title: 'Chain',
@@ -93,9 +109,9 @@ export default {
           key: 'residues',
         },
         {
-          title: 'Select',
-          key: 'select',
-          scopedSlots: { customRender: 'select' },
+          title: 'Confirm',
+          key: 'confirm',
+          scopedSlots: { customRender: 'confirm' },
         },
       ],
       residuesData: [
@@ -138,11 +154,6 @@ export default {
           dataIndex: 'last',
           key: 'last',
         },
-        {
-          title: 'Select',
-          key: 'select',
-          scopedSlots: { customRender: 'select' },
-        },
       ],
       chainData: [
         {
@@ -173,6 +184,14 @@ export default {
     handleSubmit() {
 
     },
+    onSelectResidues(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys);
+      this.selectedResidues = selectedRowKeys;
+    },
+    onSelectChain(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys);
+      this.selectedChain = selectedRowKeys;
+    },
     loadFromPdb(file) {
       console.log(file);
       this.fileList = [];
@@ -189,6 +208,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+  #protein{
+    height: 100%;
+    position: relative;
+    padding-bottom: 50px;
+    .form{
+      height: calc(100% - 50px);
+      overflow: auto;
+    }
+  }
  .jobname-input {
   width: 200px;
   margin-left: 10px;
@@ -229,6 +257,8 @@ export default {
    height: 50px;
    background: #1F2676;
    color: #ffffff;
+   position: absolute;
+   bottom: 0;
 
  }
 

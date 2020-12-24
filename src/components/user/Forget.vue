@@ -6,7 +6,7 @@
         <a-input placeholder="输入邮箱"
                  v-decorator="['email',
               { rules: [{ required: true, message: 'Please input your note!' }] }]">
-          <img src="@/assets/img/email_icon.png" alt="" slot="prefix">
+          <img class="icon-img" src="@/assets/img/email_icon@2x.png" alt="" slot="prefix">
         </a-input>
       </a-form-item>
       <a-form-item>
@@ -17,7 +17,7 @@
            '!' }] },
         ]"
                  placeholder="输入验证码">
-          <img src="@/assets/img/Password_icon.png" alt="" slot="prefix">
+          <img class="icon-img" src="@/assets/img/Password_icon@2x.png" alt="" slot="prefix">
         </a-input>
         <a-button class="email-button">获得邮箱验证</a-button>
       </a-form-item>
@@ -25,21 +25,19 @@
         <a-input placeholder="输入密码"
                  v-decorator="['email',
               { rules: [{ required: true, message: 'Please input your note!' }] }]">
-          <img src="@/assets/img/email_icon.png" alt="" slot="prefix">
+          <img class="icon-img" src="@/assets/img/email_icon@2x.png" alt="" slot="prefix">
         </a-input>
       </a-form-item>
       <a-form-item >
         <a-input placeholder="通过邮箱"
                  v-decorator="['email',
               { rules: [{ required: true, message: 'Please input your note!' }] }]">
-          <img src="@/assets/img/email_icon.png" alt="" slot="prefix">
+          <img class="icon-img" src="@/assets/img/email_icon@2x.png" alt="" slot="prefix">
         </a-input>
       </a-form-item>
-      <a-form-item>
-        <Verify @success="success" @error="alert('error')" :show-button="false"
-                :type="3" :bar-size="{width: '100%',height:'40px'}"></Verify>
-      </a-form-item>
-      <a-form-item>
+      <Verify @success="success" :show-button="false"
+              :type="3" :bar-size="{width: '100%',height:'40px'}"></Verify>
+      <a-form-item style="margin-top: 24px">
         <a-button class="submit-button" block html-type="submit">
           确定
         </a-button>
@@ -83,7 +81,7 @@ export default {
 }
 
 .modal-form{
-  margin-top: 58px;
+  margin-top: 40px;
 
   /deep/ .ant-input-affix-wrapper{
     //width: 360px;
@@ -117,6 +115,10 @@ export default {
     background: #1F2676;
     border-radius: 30px;
     color: white;
+  }
+
+  .icon-img{
+    height: 22px;
   }
 
   /deep/ .verify-bar-area{

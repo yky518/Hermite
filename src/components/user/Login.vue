@@ -6,7 +6,7 @@
       <a-input placeholder="输入邮箱"
                v-decorator="['email',
               { rules: [{ required: true, message: 'Please input your note!' }] }]">
-        <img src="@/assets/img/email_icon.png" alt="" slot="prefix">
+        <img class="icon-img" src="@/assets/img/email_icon@2x.png" alt="" slot="prefix">
       </a-input>
     </a-form-item>
     <a-form-item>
@@ -17,14 +17,12 @@
         ]"
                placeholder="输入密码"
       >
-        <img src="@/assets/img/Password_icon.png" alt="" slot="prefix">
+        <img class="icon-img" src="@/assets/img/Password_icon@2x.png" alt="" slot="prefix">
       </a-input>
     </a-form-item>
-    <a-form-item>
-      <Verify @success="success" @error="alert('error')" :show-button="false"
-              :type="3" :bar-size="{width: '100%',height:'40px'}"></Verify>
-    </a-form-item>
-    <a-form-item>
+    <Verify @success="success" :show-button="false"
+            :type="3" :bar-size="{width: '100%',height:'40px'}"></Verify>
+    <a-form-item style="margin-top: 24px">
       <a-button class="submit-button" block html-type="submit">
         Submit
       </a-button>
@@ -35,11 +33,14 @@
               <span style="color: #212982">用户协议</span>和
               <span style="color: #212982">隐私政策</span>
             </span>
-      <span style="float: right;cursor: pointer" @click="$emit('forget')">
+      <span style="float: right;cursor: pointer" @click="$emit('change-sign', 'Forget')">
               忘记密码
             </span>
     </a-form-item>
+    <p class="bottom-text" @click="$emit('change-sign', 'Register')">去注册</p>
+
   </a-form>
+
 </div>
 </template>
 
@@ -71,7 +72,7 @@ export default {
 }
 
 .modal-form{
-  margin-top: 58px;
+  margin-top: 40px;
 
   /deep/ .ant-input{
     width: 360px;
@@ -89,6 +90,18 @@ export default {
     background: #1F2676;
     border-radius: 30px;
     color: white;
+  }
+
+  .icon-img{
+    height: 22px;
+  }
+
+  .bottom-text{
+    margin-top: 40px;
+    text-align: center;
+    color: #1F2676;
+    font-size: 16px;
+    cursor: pointer;
   }
 
   /deep/ .verify-bar-area{

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -8,6 +7,12 @@ const routes = [
   {
     path: '/',
     redirect: '/hermite',
+
+  },
+  {
+    path: '/hello',
+    name: 'hello',
+    component: () => import('@/views/Home'),
 
   },
   {

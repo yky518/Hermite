@@ -1,7 +1,7 @@
 <template>
 <div>
   <a-menu v-model="current" mode="horizontal"
-          style="background-color: #1f2676;line-height: 62px;color: white">
+          style="background-color: #ffffff;line-height: 42px;">
     <a-menu-item key="hermite">Hermite</a-menu-item>
     <a-menu-item key="fep">FEP</a-menu-item>
     <a-menu-item key="mhc">MHC</a-menu-item>
@@ -15,21 +15,26 @@
       Contact
     </a-menu-item>
     <a-menu-item key="signup" style="float: right" @click="showRegister">
-      Sign Up
+      <a-button class="signup-button">Sign Up</a-button>
     </a-menu-item>
     <a-menu-item key="login" style="float: right" @click="showLogin">
       Log In
     </a-menu-item>
+    <a-menu-item style="float: right">
+      <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
+      username
+    </a-menu-item>
 
   </a-menu>
 
-  <a-modal v-model="modalVisible" :footer="null" width="1000px">
-    <a-row>
+  <a-modal v-model="modalVisible" :footer="null" width="800px"
+           :centered="true" :maskClosable="false">
+    <a-row style="background-color: #1F2676;">
       <a-col  class="left-col" :span="12">
         Hermite
       </a-col>
       <a-col class="right-col" :span="12">
-        <component :is="userComponent" @forget="userComponent = 'Forget'"></component>
+        <component :is="userComponent" @change-sign="changeSign"></component>
       </a-col>
     </a-row>
   </a-modal>
@@ -45,6 +50,7 @@ export default {
   name: 'Navbar',
   data() {
     return {
+      showUser: false,
       current: ['mail'],
       modalVisible: false,
       userComponent: 'Login',
@@ -61,6 +67,10 @@ export default {
     showRegister() {
       this.modalVisible = true;
       this.userComponent = 'Register';
+    },
+    changeSign(name) {
+      console.log(name);
+      this.userComponent = name;
     },
   },
   components: {
@@ -92,19 +102,29 @@ export default {
 }
 
 .left-col{
-  background-color: #1F2676;
-  width: 508px;
-  height: 650px;
+  width: 409px;
   color: white;
   padding: 20px 0 0 20px;
   font-size: 48px;
 }
 
 .right-col{
-  width: 491px;
-  padding: 100px 70px 0;
+  width: 391px;
+  padding: 50px 20px 0;
   text-align: center;
+  background-color: #ffffff;
+}
 
+.signup-button{
+  background-color: transparent;
+  height: 40px;
+  border-radius: 19px;
+  border: 2px solid #FFFFFF;
+  color: inherit;
+}
+
+.ignup-button:hover{
+  color: #ffffff;
 }
 
 </style>
